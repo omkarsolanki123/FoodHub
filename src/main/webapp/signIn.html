@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In / Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="forms-container">
+        <!-- Sign In Form -->
+        <form class="sign-in-form">
+          <h2>Welcome Back</h2>
+          <div class="input-field">
+            <input type="email" placeholder="Email" required>
+          </div>
+          <div class="input-field">
+            <input type="password" placeholder="Password" required>
+          </div>
+          <div class="forgot-password">
+            <a href="#">Forgot password?</a>
+          </div>
+          <button type="submit">Sign In</button>
+          <p class="toggle-text">
+            Don't have an account? 
+            <a href="#" onclick="document.body.classList.add('show-signup'); return false;">Sign up</a>
+          </p>
+        </form>
+
+        <!-- Sign Up Form -->
+        <form class="sign-up-form">
+          <h2>Create Account</h2>
+          <div class="input-field">
+            <input type="text" placeholder="Full Name" required>
+          </div>
+          <div class="input-field">
+            <input type="email" placeholder="Email" required>
+          </div>
+          <div class="input-field">
+            <input type="password" placeholder="Password" required>
+          </div>
+          <button type="submit">Sign Up</button>
+          <p class="toggle-text">
+            Already have an account? 
+            <a href="#" onclick="document.body.classList.remove('show-signup'); return false;">Sign in</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
