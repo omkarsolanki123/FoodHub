@@ -10,4 +10,6 @@ public interface MenuDAO {
 	void deleteMenu(int menuId);
 	List<Menu> getAllMenusByRestaurant(int restaurantId);
 	void addMenu(Menu menu);
+	String getRestaurantName(int restaurantId);
+
 }

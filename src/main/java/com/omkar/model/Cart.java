@@ -11,7 +11,8 @@ public class Cart {
 	}
 	
 	public void addItem(CartItem item) {
-		int itemId = item.getItemId();
+		int itemId = item.getMenuId();
+//		int itemId = item.getItemId();
 		if(items.containsKey(itemId)) {
 			CartItem existingItem = items.get(itemId);
 			existingItem.setQuantity(existingItem.getQuantity()+item.getQuantity());

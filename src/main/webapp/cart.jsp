@@ -1,3 +1,5 @@
+<%@page import="java.util.Map"%>
+<%@page import="com.omkar.model.Restaurant"%>
 <%@page import="com.omkar.model.CartItem"%>
 <%@page import="com.omkar.model.Cart"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -13,29 +15,38 @@
 <body>
     <nav>
         <div class="nav-left">
-        
             <a href="home" style="text-decoration: none; color: inherit;"><h1 class="logo">FoodHub</h1></a>
+        <%
+       
+       			 Restaurant r = (Restaurant) session.getAttribute("restaurantName");
+				if (r != null) {
+			
+			%>
             <div class="restaurant-info">
-                <h2>The Grand Kitchen</h2>
+                <h2><%=r.getName() %></h2>
                 <div class="rating">
-                    <span class="stars">4.8 ★</span>
+                    <span class="stars"><%=r.getRating() %> ★</span>
                     <span class="reviews">(2000+ reviews)</span>
                 </div>
             </div>
         </div>
         <div class="nav-right">
-            <a href="menu.jsp" class="menu-btn">Back to Menu</a><%--need to go back to same menu of restaurant --%>
+            <a href="menu?restaurantId=<%=r.getRestaurantId()%>" class="menu-btn">Back to Menu</a><%--need to go back to same menu of restaurant --%>
         </div>
+            <%
+        } 
+    %>
     </nav>
 
 
     <main class="cart-content">
 	<%
 		Cart cart=(Cart)session.getAttribute("cart");
-		Integer restaurantId=(Integer)session.getAttribute("restaurantId");
 		
 		if(cart!=null && cart.getItems() != null && !cart.getItems().isEmpty()){
-			for(CartItem item: cart.getItems().values()){
+			double totalAmount = 0;
+			float deliveryFee = 45f;
+			float tax = 63.48f;
 			
 		
 	%>
@@ -44,8 +55,14 @@
             <div class="cart-items">
                 <h2>Your Cart</h2>
                 
+        	<%
+        		
+					for(CartItem item: cart.getItems().values()){
+        			totalAmount+=item.getPrice()*item.getQuantity();
+        		
+        	%>
                 <div class="cart-item">
-                    <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=300&auto=format" alt="Butter Chicken">
+                    <img src="<%=item.getImagePath() %>" alt="Butter Chicken">
                     <div class="item-details">
                         <div class="item-info">
                             <h3><%=item.getItemname()%></h3>
@@ -53,29 +70,30 @@
                         </div>
                         <div class="item-controls">
                             <div class="quantity-controls">
-                            	<form action="cart">
-	                            	<input type="hidden" name="itemId" value="<%=item.getItemId()%>">
+                            	<form action="cart" method="get">
+	                            	<input type="hidden" name="itemId" value="<%=item.getMenuId()%>"><%--item.getItemId--%>
 	                            	<input type="hidden" name="action" value="update">
-	                            	<input type="hidden" name="quantity" value="<%=item.getQuantity()-1%>">
-                                	<button class="quantity-btn">−</button>
+	                            	<input type="hidden" name="quantity" value="<%=Math.max(0, item.getQuantity() - 1)%>">
+                                	<button type="submit" class="quantity-btn">−</button>
                             	
                             	</form>
                                 <span class="quantity"><%=item.getQuantity()%></span>
-                            	<form action="cart">
-	                            	<input type="hidden" name="itemId" value="<%=item.getItemId()%>">
+                            	<form action="cart" method="get">
+	                            	<input type="hidden" name="itemId" value="<%=item.getMenuId()%>"><%--item.getItemId--%>
 	                            	<input type="hidden" name="action" value="update">
 	                            	<input type="hidden" name="quantity" value="<%=item.getQuantity()+1%>">
-		                            <button class="quantity-btn">+</button>
+		                            <button type="submit" class="quantity-btn">+</button>
                             	</form>
                             </div>
-                            <form action="cart">
-                            	<input type="hidden" name="itemId" value="<%=item.getItemId()%>">
+                            <form action="cart" method="get">
+                            	<input type="hidden" name="itemId" value="<%=item.getMenuId()%>"><%--item.getItemId--%>
                             	<input type="hidden" name="action" value="remove">
-	                            <button class="remove-btn">Remove</button>
+	                            <button type="submit" class="remove-btn">Remove</button>
                             </form>
                         </div>
                     </div>
                 </div>
+            <%} %>
 
             </div>
 
@@ -84,22 +102,22 @@
                 <div class="summary-items">
                     <div class="summary-item">
                         <span>Subtotal</span>
-                        <span>&#8377;55.96</span>
+                        <span>&#8377;<%=totalAmount %></span>
                     </div>
                     <div class="summary-item">
                         <span>Delivery Fee</span>
-                        <span>&#8377;2.99</span>
+                        <span>&#8377;<%=deliveryFee %></span>
                     </div>
                     <div class="summary-item">
                         <span>Tax</span>
-                        <span>&#8377;4.48</span>
+                        <span>&#8377;<%=tax %></span>
                     </div>
                     <div class="summary-item total">
                         <span>Total</span>
-                        <span>&#8377;63.43</span>
+                        <span>&#8377;<%=String.format("%.2f", totalAmount+deliveryFee+tax)%></span>
                     </div>
                 </div>
-                <button class="checkout-btn">Proceed to Checkout</button>
+                <a href="checkout.jsp"><button class="checkout-btn">Proceed to Checkout</button></a>
                 <div class="delivery-time">
                     <span class="delivery-icon">🚚</span>
                     <span>Estimated delivery time: 30-45 minutes</span>
@@ -107,7 +125,8 @@
             </div>
         </div>
         <%
-			}
+        		
+
 		}else{
 			%>
 			

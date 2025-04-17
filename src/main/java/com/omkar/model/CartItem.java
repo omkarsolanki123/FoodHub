@@ -8,11 +8,20 @@ public class CartItem {
 	private String itemname;
 	private int quantity;
 	private float price;
+	private String imagePath;
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
 
 	public CartItem() {
 	}
 
-	public CartItem(int menuId,int restaurantId, String itemname, int quantity, float price) {
+	public CartItem(int menuId,int restaurantId, String itemname, int quantity, float price, String imString) {
 //		super();
 		this.menuId = menuId;
 		this.restaurantId = restaurantId;
@@ -20,8 +29,10 @@ public class CartItem {
 		this.itemname = itemname;
 		this.quantity = quantity;
 		this.price = price;
+		this.imagePath=imString;
+		
 	}
-
+//
 	public int getItemId() {
 		return itemId;
 	}

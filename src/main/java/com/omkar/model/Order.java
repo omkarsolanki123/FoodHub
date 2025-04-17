@@ -1,19 +1,21 @@
 package com.omkar.model;
 
+import java.sql.Timestamp;
+
 public class Order {
 	
 	private int orderId;
 	private int userId;
 	private int restaurantId;
-	private String date;
-	private int totalAmount;
+	private Timestamp date;
+	private double totalAmount;
 	private String status;
 	private String paymentMode;
 	
 	public Order() {
 	}
 
-	public Order(int orderId, int userId, int restaurantId, String date, int totalAmount, String status,
+	public Order(int orderId, int userId, int restaurantId, Timestamp date, int totalAmount, String status,
 			String paymentMode) {
 		super();
 		this.orderId = orderId;
@@ -49,19 +51,19 @@ public class Order {
 		this.restaurantId = restaurantId;
 	}
 
-	public String getDate() {
+	public Timestamp getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Timestamp date) {
 		this.date = date;
 	}
 
-	public int getTotalAmount() {
+	public double getTotalAmount() {
 		return totalAmount;
 	}
 
-	public void setTotalAmount(int totalAmount) {
+	public void setTotalAmount(double totalAmount) {
 		this.totalAmount = totalAmount;
 	}
 

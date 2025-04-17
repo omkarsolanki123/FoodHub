@@ -23,16 +23,25 @@ public class MenuServlet extends HttpServlet{
 		System.out.println("Received restaurantId: " + req.getParameter("restaurantId"));
 
 		int rId = Integer.parseInt(req.getParameter("restaurantId"));
-		MenuDAOImpl menuDAO = new MenuDAOImpl();
-		List<Menu> menuList = menuDAO.getAllMenusByRestaurant(rId);
-		
-		RestaurantDAOImpl restaurantDAO = new RestaurantDAOImpl();
-		List<Restaurant> allRestaurants = restaurantDAO.getAllRestaurants();
-		req.setAttribute("restaurants", allRestaurants);
-		
-		req.setAttribute("menu", menuList);
-		RequestDispatcher rd = req.getRequestDispatcher("menu.jsp");
-		rd.forward(req, resp);
+        
+        // Fetch menus for the given restaurant
+        MenuDAOImpl menuDAO = new MenuDAOImpl();
+        List<Menu> menuList = menuDAO.getAllMenusByRestaurant(rId);
+        
+        // Fetch all restaurants
+        RestaurantDAOImpl restaurantDAO = new RestaurantDAOImpl();
+        List<Restaurant> allRestaurants = restaurantDAO.getAllRestaurants();
+        
+        // Fetch specific restaurant by ID
+        Restaurant selectedRestaurant = restaurantDAO.getRestaurant(rId);
+        
+        // Set attributes
+        req.setAttribute("restaurants", allRestaurants);
+        req.setAttribute("menu", menuList);
+        req.setAttribute("selectedRestaurant", selectedRestaurant); // Setting selected restaurant
+        System.out.println("Selected Restaurant: " + selectedRestaurant);
+        RequestDispatcher rd = req.getRequestDispatcher("menu.jsp");
+        rd.forward(req, resp);
 //
 
 	}

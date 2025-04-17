@@ -1,5 +1,8 @@
 <!DOCTYPE html>
+<%@page import="com.omkar.model.CartItem"%>
 <%@page import="com.omkar.model.Restaurant"%>
+<%@page import="com.omkar.model.Cart"%>
+
 <%@page import="java.util.List"%>
 
 <html lang="en">
@@ -21,6 +24,27 @@
             <div class="sign-in">
                 <a href="signIn.html"><button class="btn">Sign in</button></a>
             </div>
+            <%
+				Cart cart=(Cart)session.getAttribute("cart");
+				int totalQuntity=0;
+				if(cart!=null && cart.getItems() != null && !cart.getItems().isEmpty()){
+					for(CartItem item: cart.getItems().values()){
+						totalQuntity+=item.getQuantity();
+					}
+				}
+				session.setAttribute("quantity", totalQuntity);
+		
+			%>
+            <div class="cart">
+                <a href="cart.jsp"><button class="btn">Cart(<%=totalQuntity %>)</button></a>
+            </div>
+          
+			
+		
+			
+			    
+			
+	
         </nav>
     </header>
 
@@ -29,8 +53,7 @@
             <button class="filter-btn active">All</button>
             <button class="filter-btn">Rating 4.0+</button>
             <button class="filter-btn">Pure Veg</button>
-            <button class="filter-btn">Fast Delivery</button>
-            <button class="filter-btn">Premium</button>
+            <button class="filter-btn">Non Veg</button>
         </div>
 
         <div class="restaurant-grid">

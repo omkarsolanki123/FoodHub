@@ -13,21 +13,27 @@
     <nav>
         <div class="nav-left">
             <a href="home" style="text-decoration: none; color: inherit;"><h1 class="logo">FoodHub</h1></a>
-            
+            <%
+		
+				Restaurant r = (Restaurant) request.getAttribute("selectedRestaurant");
+				if (r != null) {	
+			
+			%>
             <div class="restaurant-info">
          
-                <h2>Restaurant Name</h2>
+                <h2><%=r.getName() %></h2>
                 <div class="rating">
-                    <span class="stars">4.8 &#9733;</span>
-                    <span class="reviews">(2000+ reviews)</span>
+                    <span class="stars"><%=r.getRating() %> &#9733;</span>
+                    <%-- <span class="reviews">(2000+ reviews)</span>--%>
                 </div>
                 
             </div>
+            <%} %>
         </div>
         <div class="nav-right">
         <a href="cart.jsp">
             <button class="cart-btn">
-                Cart (0)
+                Cart (<%=session.getAttribute("quantity") %>)
             </button>
         </a>
         </div>
@@ -53,14 +59,15 @@
                         </div>
                         <p class="price">&#8377;<%=m.getPrice() %></p>
                         <p class="description"><%=m.getDescription() %></p>
-                        <form action="cart" method="get">
-    						<input type="hidden" name="restaurantId" value="<%=request.getParameter("restaurantId")%>">
-    						<input type="hidden" name="itemId" value="<%=m.getMenuId()%>">
-    						<input type="hidden" name="quantity" value="1" min="1">
-    						<input type="hidden" name="action" value="add">
-    						                 
-	                        <button class="add-btn">Add to Cart</button>
-                        </form>
+                        <form action="cart?menuId=<%=m.getMenuId()%>,restaurantId=<%= r.getRestaurantId()%>" method="get">
+						    
+						    <input type="hidden" name="restaurantId" value="<%= session.getAttribute("restaurantId") != null ? session.getAttribute("restaurantId") : request.getParameter("restaurantId") %>">
+						    <input type="hidden" name="itemId" value="<%=m.getMenuId()%>">
+						    <input type="hidden" name="quantity" value="1" min="1">
+						    <input type="hidden" name="action" value="add">
+						    <button class="add-btn">Add to Cart</button>
+						</form>
+
                     </div>
                 </div>
 			<%

@@ -56,8 +56,13 @@ public class RestaurantDAOImpl implements RestaurantDAO{
 			
 			preparedStatement.setInt(1,restaurantId);
 			resultSet=preparedStatement.executeQuery();
-			
-			restaurant= extractRestaurant(resultSet);
+			if (resultSet.next()) { // Ensure there is data before extracting
+	            restaurant = extractRestaurant(resultSet);
+	            System.out.println("Fetched Restaurant: " + restaurant.getName());
+	        } else {
+	            System.out.println("No restaurant found for ID: " + restaurantId);
+	        }
+//			restaurant= extractRestaurant(resultSet);
 			
 			
 			

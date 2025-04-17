@@ -21,6 +21,7 @@ public class MenuDAOImpl implements MenuDAO{
 	private static final String UPDATE_MENU_QUERY="UPDATE `menu` SET `itemName`=? `description`=? `price`=? `isAvailable`=? `imagePath`=?";
 	private static final String DELETE_MENU_QUERY="DELETE FROM `menu` WHERE `userId`=?";
 	private static final String GET_MENU_BY_RestaurantId="SELECT *FROM `Menu` where `restaurantId`=?";
+	private static final String GET_RESTAURANT_NAME = "SELECT restaurantName FROM restaurant WHERE restaurantId = ?";
 //
 
 //	@Override
@@ -134,16 +135,33 @@ public class MenuDAOImpl implements MenuDAO{
 			
 			preparedStatement.setInt(1,menuId);
 			resultSet=preparedStatement.executeQuery();
-			
-			menu= extractMenu(resultSet);
-			
-			
+						
+			 if (resultSet.next()) { // Ensure there's a result before extracting
+		            menu = extractMenu(resultSet);
+		        }
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	
 		return menu;
+	}
+	@Override
+	public String getRestaurantName(int restaurantId) {
+	    String restaurantName = null;
+	    try (Connection con = DBConnection.getConnection();
+	         PreparedStatement preparedStatement = con.prepareStatement(GET_RESTAURANT_NAME)) {
+
+	        preparedStatement.setInt(1, restaurantId);
+	        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+	            if (resultSet.next()) {
+	                restaurantName = resultSet.getString("restaurantName");
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return restaurantName;
 	}
 	
 
